@@ -1,31 +1,39 @@
 package HomeDelivery.Ecommerce.controllers;
 
-import Exceptions.NotFoundException;
 import HomeDelivery.Ecommerce.dto.ProductDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import HomeDelivery.Ecommerce.models.ProductModel;
 import org.springframework.web.bind.annotation.*;
-import services.ProductService;
-
+import HomeDelivery.Ecommerce.services.ProductService;
 import java.util.List;
 
 @RestController
 @RequestMapping("/products")
-public class ProductController
-{
-//    @Autowired
-    private ProductService productService;
+public class ProductController {
 
-    public ProductController(ProductService productService){
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
-    @GetMapping("{id}")
-    public @ResponseBody ProductDTO getProductById(@PathVariable int id) throws NotFoundException {
+    @GetMapping("/{id}")
+    public @ResponseBody ProductDTO getProductById(
+            @PathVariable("id") Long id) throws Exception {
+        return productService.getProductById(id);
+    }
 
-        return productService.getDetailsById(id);
-    }
     @GetMapping("")
-    public @ResponseBody List<ProductDTO> getAllProducts(){
-        return  productService.getProducts();
+    public @ResponseBody List<ProductDTO> getAllProducts() {
+        return productService.getAllProducts();
     }
+
+    //    @RequestBody Product product -> Converts the received json to a Product java object
+    @PostMapping("")
+    public String createProduct(@RequestBody ProductModel productModel) {
+        System.out.println(productModel.getCategory());
+        System.out.println(productModel.getTitle());
+        System.out.println(productModel.getPrice());
+        return "Product created.";
+    }
+
 }

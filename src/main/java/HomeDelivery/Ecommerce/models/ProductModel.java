@@ -1,4 +1,4 @@
-package models;
+package HomeDelivery.Ecommerce.models;
 
 import lombok.Getter;
 import lombok.Setter;

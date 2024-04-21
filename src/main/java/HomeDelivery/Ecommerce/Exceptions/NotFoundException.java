@@ -1,4 +1,4 @@
-package Exceptions;
+package HomeDelivery.Ecommerce.Exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
