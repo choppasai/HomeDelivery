@@ -10,7 +10,7 @@ import java.util.Optional;
 
 
 public interface UserRepo extends JpaRepository<UserModel,Long> {
-    @Override
+
     Optional<UserModel> findById(Long aLong);
     List<UserModel> findByNameEndingWith(String suffix);
     Optional<UserModel> findByName(String name);

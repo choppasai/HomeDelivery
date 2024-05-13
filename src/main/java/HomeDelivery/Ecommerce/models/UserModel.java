@@ -1,20 +1,26 @@
 package HomeDelivery.Ecommerce.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
+import org.springframework.boot.autoconfigure.web.WebProperties;
+
+import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
+//kind of inheritance where parent class act as abstract
+//when ever mappedsuperclass is used. entity annotations should not use.
+//@MappedSuperclass
+//@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class UserModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue
+    private UUID id;
     private String name;
     private String address;
-    private String email;
+    private String emailId;
 }
