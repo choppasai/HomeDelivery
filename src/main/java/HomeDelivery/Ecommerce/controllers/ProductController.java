@@ -1,14 +1,11 @@
 package HomeDelivery.Ecommerce.controllers;
 
 import HomeDelivery.Ecommerce.dto.ProductDTO;
-import HomeDelivery.Ecommerce.models.ProductModel;
-import org.springframework.http.HttpStatus;
+import HomeDelivery.Ecommerce.models.Products;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import HomeDelivery.Ecommerce.services.ProductService;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -27,18 +24,16 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
-    @GetMapping("")
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public @ResponseBody List<ProductDTO> getAllProducts() {
         return productService.getAllProducts();
     }
 
     //    @RequestBody Product product -> Converts the received json to a Product java object
     @PostMapping("")
-    public String createProduct(@RequestBody ProductModel productModel) {
-        System.out.println(productModel.getCategory());
-        System.out.println(productModel.getTitle());
-        System.out.println(productModel.getPrice());
-        return "Product created.";
+    public ResponseEntity<String> createProduct(@RequestBody ProductDTO productDTO) {
+        productService.createProduct(productDTO);
+        return ResponseEntity.ok().body("created");
     }
 
 

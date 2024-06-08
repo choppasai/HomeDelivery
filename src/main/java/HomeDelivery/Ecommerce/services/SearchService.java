@@ -46,4 +46,7 @@ public class SearchService {
     public Slice<GenericProducts> getSlice(int min,int max){
         return genericRepo.findPriceInRangeSlice(min,max);
     }
+    public void sample(){
+        genericRepo.findById(8);
+    }
 }

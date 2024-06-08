@@ -1,10 +1,9 @@
 package HomeDelivery.Ecommerce.services;
 
-import HomeDelivery.Ecommerce.Repository.BatchRepo;
-import HomeDelivery.Ecommerce.Repository.InstructorRepo;
-import HomeDelivery.Ecommerce.dto.BatchDTO;
-import HomeDelivery.Ecommerce.models.Batch;
-import HomeDelivery.Ecommerce.models.InstructorModel;
+import HomeDelivery.Ecommerce.Repository.CartRepo;
+import HomeDelivery.Ecommerce.dto.UserDTO;
+import HomeDelivery.Ecommerce.models.Cart;
+import HomeDelivery.Ecommerce.models.Products;
 import HomeDelivery.Ecommerce.models.UserModel;
 import HomeDelivery.Ecommerce.Repository.UserRepo;
 import org.springframework.stereotype.Service;
@@ -12,50 +11,33 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 
 public class UserService {
     private final UserRepo userRepo;
-    private final InstructorRepo instructorRepo;
-    private final BatchRepo batchRepo;
-
-    public UserService(UserRepo userRepo, InstructorRepo instructorRepo, BatchRepo batchRepo) {
+    private final CartRepo cartRepo;
+    public UserService(UserRepo userRepo, CartRepo cartRepo) {
         this.userRepo = userRepo;
-        this.instructorRepo = instructorRepo;
-        this.batchRepo = batchRepo;
+
+        this.cartRepo = cartRepo;
     }
 
-    public UserModel createNewUser(String name, String email){
+    public UserModel createNewUser(UserDTO userDTO){
         UserModel userModel = new UserModel();
-        userModel.setName(name);
-        userModel.setEmailId(email);
+        userModel.setName(userDTO.getName());
+        userModel.setEmailId(userDTO.getEmail());
+        userModel.setAddress(userDTO.getAddress());
+        Cart cart = new Cart();
+        cart.setUser(userModel);
+//
         userRepo.save(userModel);
+        cartRepo.save(cart);
         return userModel;
     }
     public Optional<UserModel> getByUser(String name){
         return userRepo.findByName(name);
     }
-    public InstructorModel createNewInstructor(String skill, String name, List<BatchDTO> batchDTO){
-        InstructorModel instructorModel = new InstructorModel() ;
-        instructorModel.setSkill(skill);
-        instructorModel.setName(name);
-        List<Batch> batchdetails = new ArrayList<Batch>();
-        for(BatchDTO b: batchDTO){
-            Batch ba = new Batch();
-            ba.setBatch_id(b.getId());
-            ba.setBatch_name(b.getBatch_Name());
-            batchdetails.add(ba);
-        }
-        instructorModel.setBatch(batchdetails);
-        instructorRepo.save(instructorModel);
-        return instructorModel;
-    }
-    public Batch createBatch(String name,int strength){
-        Batch batch = new Batch();
-        batch.setBatch_name(name);
-        batch.setStrength(strength);
-        batchRepo.save(batch);
-        return batch;
-    }
+
 }

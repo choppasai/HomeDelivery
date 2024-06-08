@@ -15,12 +15,15 @@ import java.util.UUID;
 //when ever mappedsuperclass is used. entity annotations should not use.
 //@MappedSuperclass
 //@Inheritance(strategy = InheritanceType.JOINED)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class UserModel {
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String name;
     private String address;
     private String emailId;
+    @OneToOne
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 }

@@ -24,7 +24,7 @@ public class SearchController {
     @GetMapping("/generate")
     public ResponseEntity getProducts(){
         searchService.createProduct();
-        return ResponseEntity.ok().body("created");
+        return ResponseEntity.ok().body("Generated");
     }
     @GetMapping("/paging")
     public Page<GenericProducts> getPage(@RequestParam int pageNumber,
