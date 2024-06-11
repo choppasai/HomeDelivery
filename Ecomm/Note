@@ -1,0 +1,1 @@
+When were using no sql database class should be serializable. Redis is an no sql database. So need to implement serializable interface.

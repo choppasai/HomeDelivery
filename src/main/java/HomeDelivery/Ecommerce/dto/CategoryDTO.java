@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+
+
 @Data
 public class CategoryDTO {
     private int categoryID;
