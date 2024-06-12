@@ -1,28 +1,25 @@
 package HomeDelivery.Ecommerce.services;
 
 import HomeDelivery.Ecommerce.Repository.CartRepo;
-import HomeDelivery.Ecommerce.Repository.CategoryRepo;
+
 import HomeDelivery.Ecommerce.Repository.ProductRepo;
-import HomeDelivery.Ecommerce.dto.CartDTO;
+
 import HomeDelivery.Ecommerce.models.Cart;
-import HomeDelivery.Ecommerce.models.Category;
+
 import HomeDelivery.Ecommerce.models.Products;
-import net.bytebuddy.description.NamedElement;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+
 
 @Service
 public class CartService {
-    private final CategoryRepo categoryRepo;
     private final CartRepo cartRepo;
     private final ProductRepo productRepo;
 
-    public CartService(CategoryRepo categoryRepo, CartRepo cartRepo, ProductRepo productRepo) {
-        this.categoryRepo = categoryRepo;
+    public CartService(CartRepo cartRepo, ProductRepo productRepo) {
         this.cartRepo = cartRepo;
         this.productRepo = productRepo;
     }

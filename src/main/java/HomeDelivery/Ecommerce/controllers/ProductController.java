@@ -27,7 +27,6 @@ public class ProductController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    @Cacheable(value = "product")
     public @ResponseBody List<ProductDTO> getAllProducts() {
         return productService.getAllProducts();
     }
@@ -39,8 +38,9 @@ public class ProductController {
         productService.createProduct(productDTO);
         return ResponseEntity.ok().body("created");
     }
-
-
-
+    @GetMapping("/productsCategory/{categoryName}")
+    public ResponseEntity<List<ProductDTO>> productsByCategory(@PathVariable String categoryName){
+        return ResponseEntity.ok(productService.getByCategory(categoryName));
+    }
 
 }

@@ -1,6 +1,5 @@
 package HomeDelivery.Ecommerce.controllers;
 
-import HomeDelivery.Ecommerce.dto.CartDTO;
 import HomeDelivery.Ecommerce.models.Cart;
 import HomeDelivery.Ecommerce.services.CartService;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/cart")

@@ -1,52 +1,64 @@
 package HomeDelivery.Ecommerce.services;
 
-import HomeDelivery.Ecommerce.Repository.GenericRepo;
-import HomeDelivery.Ecommerce.models.GenericProducts;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.hibernate.Length;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
+import HomeDelivery.Ecommerce.Repository.ProductRepo;
+import HomeDelivery.Ecommerce.dto.ProductDTO;
+import HomeDelivery.Ecommerce.models.Products;
+import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class SearchService {
 
-    private final GenericRepo genericRepo;
-    String[] ls = {"T.V","A.C","Refrigerator","Cooler","Washing machine","mixer","Fan","Light"};
+    private final ProductRepo productRepo;
+    private final ModelMapper modelMapper;
 
-    public SearchService(GenericRepo genericRepo) {
-        this.genericRepo = genericRepo;
+    public SearchService(ProductRepo productRepo, ModelMapper modelMapper) {
+        this.productRepo = productRepo;
+        this.modelMapper = modelMapper;
     }
 
-    public void createProduct(){
+    public Page<ProductDTO> getPage(int pageNumber, int pageSize,String sorting){
 
-        for (String l : ls) {
-            GenericProducts genericProducts = new GenericProducts();
-            genericProducts.setName(l);
-            Random random = new Random();
-            genericProducts.setPrice( random.nextInt(5000));
-//            genericRepo.save(genericProducts);
+        Page<Products> productsPage = switchMethod(pageNumber,pageSize,sorting);
+        Page<ProductDTO> productDTOPage = productsPage.map(ProductDTO::toProductDTO);
+        return productDTOPage;
+    }
+    public Page<Products> switchMethod(int pageNumber, int pageSize,String sorting){
+        System.out.println("entered");
+        return switch (sorting){
+            case "price-asc" ->
+                productRepo.findAll(PageRequest.of(pageNumber,pageSize,Sort.by("price").ascending()));
+            case "price-desc" ->
+                    productRepo.findAll(PageRequest.of(pageNumber,pageSize,Sort.Direction.DESC,"price"));
+
+            case "title-desc"->
+                productRepo.findAll(PageRequest.of(pageNumber,pageSize,Sort.Direction.ASC,"title"));
+
+            default->
+                productRepo.findAll(PageRequest.of(pageNumber,pageSize));
+
+        };
+    }
+    public List<ProductDTO> getList(int min,int max){
+        List<Products> productsList = productRepo.findPriceInRange(min,max);
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for(Products products:productsList){
+            ProductDTO productDTO = new ProductDTO();
+            modelMapper.map(products,productDTO);
+            productDTOList.add(productDTO);
         }
 
+        return productDTOList;
     }
-    public Page<GenericProducts> getPage(int pageNumber,int pageSize){
-        PageRequest pageRequest = PageRequest.of(pageNumber,pageSize);
+    public Slice<ProductDTO> getSlice(int min,int max){
+        Slice<Products> productsSlice = productRepo.findPriceInRangeSlice(min,max);
+        return productsSlice.map(ProductDTO::toProductDTO);
+    }
 
-        return genericRepo.findAll(pageRequest);
-    }
-    public List<GenericProducts> getList(int min,int max){
-        return genericRepo.findPriceInRange(min,max);
-    }
-    public Slice<GenericProducts> getSlice(int min,int max){
-        return genericRepo.findPriceInRangeSlice(min,max);
-    }
-    public void sample(){
-        genericRepo.findById(8);
-    }
+
 }
