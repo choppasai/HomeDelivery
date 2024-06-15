@@ -4,6 +4,8 @@ import HomeDelivery.Ecommerce.dto.ProductDTO;
 import HomeDelivery.Ecommerce.models.Products;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import HomeDelivery.Ecommerce.services.ProductService;
@@ -36,7 +38,7 @@ public class ProductController {
 
     public ResponseEntity<String> createProduct(@RequestBody ProductDTO productDTO) {
         productService.createProduct(productDTO);
-        return ResponseEntity.ok().body("created");
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @GetMapping("/productsCategory/{categoryName}")
     public ResponseEntity<List<ProductDTO>> productsByCategory(@PathVariable String categoryName){
