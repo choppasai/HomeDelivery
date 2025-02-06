@@ -1,12 +1,13 @@
 package HomeDelivery.Ecommerce.dto;
 
+import HomeDelivery.Ecommerce.models.Products;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class CartDTO {
-    private String productName;
-    private String category;
-    private long price;
-
+    private Integer cartId;
 
 }

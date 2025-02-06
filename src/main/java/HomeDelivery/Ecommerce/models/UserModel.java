@@ -18,12 +18,13 @@ import java.util.UUID;
 //@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class UserModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "user_id",columnDefinition = "BINARY(16)")
+    private UUID userId;
     private String name;
     private String address;
     private String emailId;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "cart_id")
     private Cart cart;
 }

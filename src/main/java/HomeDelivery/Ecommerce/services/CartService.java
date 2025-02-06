@@ -8,10 +8,13 @@ import HomeDelivery.Ecommerce.models.Cart;
 
 import HomeDelivery.Ecommerce.models.Products;
 
+import HomeDelivery.Ecommerce.models.UserModel;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -23,6 +26,13 @@ public class CartService {
         this.cartRepo = cartRepo;
         this.productRepo = productRepo;
     }
+    public Cart createCart(UserModel user){
+        Cart cart = new Cart();
+        cart.setCartId(UUID.randomUUID());
+        cart.setUserId(user.getUserId());
+        cart.setProductsList(new ArrayList<>());
+        return cart;
+    }
 
     public Cart addToCart(Integer cartId, int productId) throws Exception {
         Optional<Cart> cartOptional =  cartRepo.findById(cartId);
@@ -31,7 +41,7 @@ public class CartService {
 
             Cart cart = cartOptional.get();
             Products products = productsOptional.get();
-            products.setCart(cart);
+//            products.setCart(cart);
             List<Products> s = cart.getProductsList();
             s.add(products);
             cart.setProductsList(s);
@@ -52,7 +62,9 @@ public class CartService {
 //        products.setTitle(cartDTO.getProductName());
 //        products.setPrice(cartDTO.getPrice());
 //        Category category = new Category();
-//        category.setCategoryName(cartDTO.getCategory());
+//        category.setCategory
+//
+//        Name(cartDTO.getCategory());
 //        categoryRepo.save(category);
 //        products.setCategory(category);
 //        productRepo.save(products);
